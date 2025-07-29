@@ -1,0 +1,74 @@
+[
+    {
+        "id": "1",
+        "type": "single",
+        "names": [
+            "Aru"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "2",
+        "type": "single",
+        "names": [
+            "Abhinav"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "3",
+        "type": "single",
+        "names": [
+            "Adi Ronan"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "4",
+        "type": "single",
+        "names": [
+            "Rakshitha"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "5",
+        "type": "single",
+        "names": [
+            "Piya"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "6",
+        "type": "single",
+        "names": [
+            "Vidhur"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "7",
+        "type": "single",
+        "names": [
+            "Nehal"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    },
+    {
+        "id": "8",
+        "type": "single",
+        "names": [
+            "Ruqaiya"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null
+    }
+]
