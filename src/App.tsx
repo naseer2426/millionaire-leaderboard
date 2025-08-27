@@ -37,7 +37,7 @@ function App() {
       <div className="bg-gray-800 shadow-lg border-b border-gray-700">
         <div className="flex justify-center items-center max-w-6xl mx-auto px-6 py-4">
           <h1 className="text-3xl font-bold text-gray-100">
-            Millionaire Leaderboard
+            Millionaire Leaderboard 2
           </h1>
         </div>
       </div>
