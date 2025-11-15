@@ -9,6 +9,7 @@ export interface Player {
     rank?: number;
     avatarUrl?: string;
     teamAvatarUrl?: string;
+    playerInput?: string;
 }
 
 interface LeaderboardProps {
@@ -19,15 +20,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
     const [players, setPlayers] = useState<Player[]>(initialPlayers);
     const [sortedPlayers, setSortedPlayers] = useState<Player[]>([...initialPlayers].sort((a, b) => b.moneyEarned - a.moneyEarned));
     const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
-
-    // Check for 'game' query param
-    const isGame2 = (() => {
-        if (typeof window !== 'undefined') {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('game') === '2';
-        }
-        return false;
-    })();
 
     // Load players from localStorage on component mount
     useEffect(() => {
@@ -172,15 +164,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
                 >
                     Make Team
                 </button>
-                {isGame2 && (
-                    <button
-                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded shadow transition-colors duration-200"
-                        onClick={handleBreakTeam}
-                        disabled={selectedPlayerIds.length !== 1 || (selectedPlayerIds.length === 1 && players.find(p => p.id === selectedPlayerIds[0])?.type !== 'team')}
-                    >
-                        Break Team
-                    </button>
-                )}
+                <button
+                    className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded shadow transition-colors duration-200"
+                    onClick={handleBreakTeam}
+                    disabled={selectedPlayerIds.length !== 1 || (selectedPlayerIds.length === 1 && players.find(p => p.id === selectedPlayerIds[0])?.type !== 'team')}
+                >
+                    Break Team
+                </button>
             </div>
             <div className="flex flex-col items-center gap-6">
                 {playersWithRank.map((player) => (
@@ -195,7 +185,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
                         teamAvatarUrl={player.teamAvatarUrl}
                         onUpdatePlayer={handleUpdatePlayer}
                         selected={selectedPlayerIds.includes(player.id)}
-                        onSelect={isGame2 ? handleSelectPlayer : player.type === 'single' ? handleSelectPlayer : undefined}
+                        onSelect={handleSelectPlayer}
                     />
                 ))}
             </div>

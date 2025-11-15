@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Leaderboard } from './components/Leaderboard';
+import { Game } from './components/Game';
+import { Admin } from './components/Admin';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
 import type { Player } from './components/Leaderboard';
 
 function App() {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  // Check for admin query parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setShowAdmin(params.get('admin') === 'naseer');
+  }, []);
 
   // Load players from localStorage or fetch from /players.json
   useEffect(() => {
@@ -37,14 +47,37 @@ function App() {
       <div className="bg-gray-800 shadow-lg border-b border-gray-700">
         <div className="flex justify-center items-center max-w-6xl mx-auto px-6 py-4">
           <h1 className="text-3xl font-bold text-gray-100">
-            Millionaire Leaderboard 2
+            Millionaire Leaderboard
           </h1>
         </div>
       </div>
 
-      <Leaderboard
-        players={players}
-      />
+      <div className="max-w-6xl mx-auto px-6 py-6">
+        <Tabs defaultValue="leaderboard" className="w-full">
+          <div className="flex justify-center mb-4">
+            <TabsList>
+              <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+              <TabsTrigger value="game">Game</TabsTrigger>
+              {showAdmin && (
+                <TabsTrigger value="admin" variant="danger">Admin</TabsTrigger>
+              )}
+            </TabsList>
+          </div>
+          <TabsContent value="leaderboard">
+            <Leaderboard
+              players={players}
+            />
+          </TabsContent>
+          <TabsContent value="game">
+            <Game />
+          </TabsContent>
+          {showAdmin && (
+            <TabsContent value="admin">
+              <Admin />
+            </TabsContent>
+          )}
+        </Tabs>
+      </div>
     </div>
   );
 }

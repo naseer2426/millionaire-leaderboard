@@ -6,25 +6,28 @@
             "Aru"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "2",
         "type": "single",
         "names": [
-            "Abhinav"
+            "Akshu"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "3",
         "type": "single",
         "names": [
-            "Adi Ronan"
+            "Ronan"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "4",
@@ -33,7 +36,8 @@
             "Rakshitha"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "5",
@@ -42,33 +46,87 @@
             "Piya"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "6",
         "type": "single",
         "names": [
-            "Vidhur"
+            "Di(y)a"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "7",
         "type": "single",
         "names": [
-            "Nehal"
+            "Jiju"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
     },
     {
         "id": "8",
         "type": "single",
         "names": [
-            "Ruqaiya"
+            "Sim"
         ],
         "moneyEarned": 0,
-        "avatarUrl": null
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "9",
+        "type": "single",
+        "names": [
+            "Kabi"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "10",
+        "type": "single",
+        "names": [
+            "Yamini"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "11",
+        "type": "single",
+        "names": [
+            "Sanjeev"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "12",
+        "type": "single",
+        "names": [
+            "Veebhav"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "13",
+        "type": "single",
+        "names": [
+            "Kavya"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
     }
 ]
