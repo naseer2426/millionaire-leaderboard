@@ -3,7 +3,7 @@
         "id": "1",
         "type": "single",
         "names": [
-            "Aru"
+            "Gulshan"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -13,7 +13,7 @@
         "id": "2",
         "type": "single",
         "names": [
-            "Akshu"
+            "Rakshitha"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -23,7 +23,7 @@
         "id": "3",
         "type": "single",
         "names": [
-            "Ronan"
+            "Shiv"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -33,7 +33,7 @@
         "id": "4",
         "type": "single",
         "names": [
-            "Rakshitha"
+            "Sim"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -53,7 +53,7 @@
         "id": "6",
         "type": "single",
         "names": [
-            "Di(y)a"
+            "Aru"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -63,7 +63,7 @@
         "id": "7",
         "type": "single",
         "names": [
-            "Jiju"
+            "Kabi"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -73,7 +73,7 @@
         "id": "8",
         "type": "single",
         "names": [
-            "Sim"
+            "Swa"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -83,7 +83,7 @@
         "id": "9",
         "type": "single",
         "names": [
-            "Kabi"
+            "Veebhab"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -93,7 +93,7 @@
         "id": "10",
         "type": "single",
         "names": [
-            "Yamini"
+            "Vartika"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -103,7 +103,7 @@
         "id": "11",
         "type": "single",
         "names": [
-            "Sanjeev"
+            "Aishik"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -113,7 +113,7 @@
         "id": "12",
         "type": "single",
         "names": [
-            "Veebhav"
+            "Raju"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,
@@ -123,7 +123,27 @@
         "id": "13",
         "type": "single",
         "names": [
-            "Kavya"
+            "Poornima"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "14",
+        "type": "single",
+        "names": [
+            "Akshu"
+        ],
+        "moneyEarned": 0,
+        "avatarUrl": null,
+        "playerInput": ""
+    },
+    {
+        "id": "15",
+        "type": "single",
+        "names": [
+            "Rhea"
         ],
         "moneyEarned": 0,
         "avatarUrl": null,

@@ -75,39 +75,62 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
         setSelectedPlayerIds(prev => {
             if (prev.includes(playerId)) {
                 return prev.filter(id => id !== playerId);
-            } else if (prev.length < 2) {
-                return [...prev, playerId];
             } else {
-                return prev;
+                return [...prev, playerId];
             }
         });
     };
 
     const handleMakeTeam = () => {
-        if (selectedPlayerIds.length !== 2) return;
-        const [id1, id2] = selectedPlayerIds;
-        const player1 = players.find(p => p.id === id1);
-        const player2 = players.find(p => p.id === id2);
-        if (!player1 || !player2) return;
+        if (selectedPlayerIds.length < 2) return;
+
+        const selectedPlayers = selectedPlayerIds
+            .map(id => players.find(p => p.id === id))
+            .filter((p): p is Player => p !== undefined);
+
+        if (selectedPlayers.length !== selectedPlayerIds.length) return;
+
+        // Prevent merging if any selected player is already a team with more than 1 player
+        const hasExistingTeam = selectedPlayers.some(p => p.type === 'team' && p.names.length > 1);
+        if (hasExistingTeam) {
+            alert('Cannot merge teams. Please break existing teams first before creating a new team.');
+            return;
+        }
+
+        // Get all names from selected players
+        const teamNames = selectedPlayers.map(p => p.names[0]);
+
         // Prevent duplicate teams (regardless of order)
-        const teamExists = players.some(p =>
-            p.type === 'team' &&
-            ((p.names[0] === player1.names[0] && p.names[1] === player2.names[0]) ||
-                (p.names[0] === player2.names[0] && p.names[1] === player1.names[0]))
-        );
+        // Check if a team exists with the same set of names
+        const teamExists = players.some(p => {
+            if (p.type !== 'team' || p.names.length !== teamNames.length) return false;
+            // Check if all names match (order-independent)
+            const sortedExistingNames = [...p.names].sort();
+            const sortedNewNames = [...teamNames].sort();
+            return sortedExistingNames.every((name, idx) => name === sortedNewNames[idx]);
+        });
+
         if (teamExists) {
             alert('A team with these players already exists.');
             return;
         }
+
+        // Calculate total money earned
+        const totalMoney = selectedPlayers.reduce((sum, p) => sum + p.moneyEarned, 0);
+
+        // Get first available avatar
+        const teamAvatarUrl = selectedPlayers.find(p => p.avatarUrl)?.avatarUrl || undefined;
+
         const newTeam: Player = {
-            id: `team-${player1.id}-${player2.id}`,
+            id: `team-${selectedPlayerIds.join('-')}`,
             type: 'team',
-            names: [player1.names[0], player2.names[0]],
-            moneyEarned: player1.moneyEarned + player2.moneyEarned,
-            teamAvatarUrl: player1.avatarUrl || player2.avatarUrl || undefined,
+            names: teamNames,
+            moneyEarned: totalMoney,
+            teamAvatarUrl: teamAvatarUrl,
         };
-        // Remove player1 and player2 from the list
-        const updatedPlayers = [...players.filter(p => p.id !== id1 && p.id !== id2), newTeam];
+
+        // Remove all selected players from the list
+        const updatedPlayers = [...players.filter(p => !selectedPlayerIds.includes(p.id)), newTeam];
         setPlayers(updatedPlayers);
         setSortedPlayers([...updatedPlayers].sort((a, b) => b.moneyEarned - a.moneyEarned));
         localStorage.setItem('millionaire-players', JSON.stringify(updatedPlayers));
@@ -118,24 +141,21 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
         if (selectedPlayerIds.length !== 1) return;
         const teamPlayer = players.find(p => p.id === selectedPlayerIds[0]);
         if (!teamPlayer || teamPlayer.type !== 'team') return;
-        const [name1, name2] = teamPlayer.names;
-        const splitMoney = teamPlayer.moneyEarned / 2;
-        const player1: Player = {
-            id: `${teamPlayer.id}-1-${Date.now()}`,
+
+        // Split money equally among all team members
+        const splitMoney = teamPlayer.moneyEarned / teamPlayer.names.length;
+
+        // Create individual players from team members
+        const individualPlayers: Player[] = teamPlayer.names.map((name, index) => ({
+            id: `${teamPlayer.id}-${index + 1}-${Date.now()}`,
             type: 'single',
-            names: [name1],
+            names: [name],
             moneyEarned: splitMoney,
             avatarUrl: teamPlayer.teamAvatarUrl,
-        };
-        const player2: Player = {
-            id: `${teamPlayer.id}-2-${Date.now()}`,
-            type: 'single',
-            names: [name2],
-            moneyEarned: splitMoney,
-            avatarUrl: teamPlayer.teamAvatarUrl,
-        };
-        // Remove the team and add the two new players
-        const updatedPlayers = [...players.filter(p => p.id !== teamPlayer.id), player1, player2];
+        }));
+
+        // Remove the team and add all individual players
+        const updatedPlayers = [...players.filter(p => p.id !== teamPlayer.id), ...individualPlayers];
         setPlayers(updatedPlayers);
         setSortedPlayers([...updatedPlayers].sort((a, b) => b.moneyEarned - a.moneyEarned));
         localStorage.setItem('millionaire-players', JSON.stringify(updatedPlayers));
@@ -148,6 +168,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
         rank: index + 1
     }));
 
+    // Check if any selected player is already a team (prevents merging teams)
+    const hasExistingTeam = selectedPlayerIds.some(id => {
+        const player = players.find(p => p.id === id);
+        return player?.type === 'team' && player.names.length > 1;
+    });
+    const canMakeTeam = selectedPlayerIds.length >= 2 && !hasExistingTeam;
+
     return (
         <div className="w-full mx-auto p-6">
             <div className="flex justify-end mb-4 w-full max-w-3xl mx-auto gap-2">
@@ -159,8 +186,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players: initialPlayers }) =>
                 </button>
                 <button
                     onClick={handleMakeTeam}
-                    disabled={selectedPlayerIds.length !== 2}
-                    className={`px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded shadow transition-colors duration-200 ${selectedPlayerIds.length !== 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={!canMakeTeam}
+                    className={`px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded shadow transition-colors duration-200 ${!canMakeTeam ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                     Make Team
                 </button>

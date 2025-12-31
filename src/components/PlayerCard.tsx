@@ -142,7 +142,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
                             ) : (
                                 <div className="relative">
                                     <Avatar className="w-12 h-12 border-2 border-gray-700">
-                                        <AvatarImage src={teamAvatarUrl} alt={`${names[0]} & ${names[1]}`} />
+                                        <AvatarImage src={teamAvatarUrl} alt={names.join(' & ')} />
                                         <AvatarFallback className="bg-green-900 text-green-300">
                                             <Users className="w-6 h-6" />
                                         </AvatarFallback>
@@ -163,11 +163,12 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
                                 </div>
                             ) : (
                                 <div>
-                                    <p className="font-semibold text-gray-100 truncate">{names[0]}</p>
-                                    <p className="font-semibold text-gray-100 truncate">{names[1]}</p>
+                                    {names.map((name, index) => (
+                                        <p key={index} className="font-semibold text-gray-100 truncate">{name}</p>
+                                    ))}
                                     <p className="text-sm text-gray-400 flex items-center">
                                         <Users className="w-3 h-3 mr-1" />
-                                        Team
+                                        Team ({names.length} {names.length === 1 ? 'player' : 'players'})
                                     </p>
                                 </div>
                             )}
