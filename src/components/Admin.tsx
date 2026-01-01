@@ -5,12 +5,28 @@ import type { Player } from './Leaderboard';
 interface AdminSettings {
     secret: boolean;
     winningPlayer?: string;
+    selectedImage?: string;
 }
 
 function Admin() {
     const [players, setPlayers] = useState<Player[]>([]);
     const [secret, setSecret] = useState<boolean>(true);
     const [winningPlayer, setWinningPlayer] = useState<string | undefined>(undefined);
+    const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+    const [availableImages, setAvailableImages] = useState<string[]>([]);
+
+    // Load available images from game_images.json
+    useEffect(() => {
+        fetch('/game_images.json')
+            .then(res => res.json())
+            .then((data: string[]) => {
+                setAvailableImages(data);
+            })
+            .catch(error => {
+                console.error('Error loading game images:', error);
+                setAvailableImages([]);
+            });
+    }, []);
 
     // Load admin settings from localStorage
     useEffect(() => {
@@ -20,6 +36,7 @@ function Admin() {
                 const parsed: AdminSettings = JSON.parse(adminSettings);
                 setSecret(parsed.secret !== undefined ? parsed.secret : true);
                 setWinningPlayer(parsed.winningPlayer);
+                setSelectedImage(parsed.selectedImage);
             } catch (error) {
                 console.error('Error loading admin settings:', error);
                 // If parsing fails, default to true and save it
@@ -77,8 +94,19 @@ function Admin() {
     const handleToggleSecret = () => {
         const newSecret = !secret;
         setSecret(newSecret);
-        const adminSettings: AdminSettings = { secret: newSecret, winningPlayer };
+        const adminSettings: AdminSettings = { secret: newSecret, winningPlayer, selectedImage };
         localStorage.setItem('admin-settings', JSON.stringify(adminSettings));
+        // Dispatch custom event for same-window updates
+        window.dispatchEvent(new Event('admin-settings-changed'));
+    };
+
+    const handleImageChange = (imagePath: string) => {
+        const newSelectedImage = imagePath === '' ? undefined : imagePath;
+        setSelectedImage(newSelectedImage);
+        const adminSettings: AdminSettings = { secret, winningPlayer, selectedImage: newSelectedImage };
+        localStorage.setItem('admin-settings', JSON.stringify(adminSettings));
+        // Dispatch custom event for same-window updates
+        window.dispatchEvent(new Event('admin-settings-changed'));
     };
 
     const evaluateTokenGame = (players: Player[]): string | undefined => {
@@ -165,8 +193,10 @@ function Admin() {
         const winnerId = evaluateTokenGame(players);
         if (winnerId) {
             setWinningPlayer(winnerId);
-            const adminSettings: AdminSettings = { secret, winningPlayer: winnerId };
+            const adminSettings: AdminSettings = { secret, winningPlayer: winnerId, selectedImage };
             localStorage.setItem('admin-settings', JSON.stringify(adminSettings));
+            // Dispatch custom event for same-window updates
+            window.dispatchEvent(new Event('admin-settings-changed'));
         }
     };
 
@@ -174,8 +204,10 @@ function Admin() {
         const winnerId = evaluateUniqueBidGame(players);
         if (winnerId) {
             setWinningPlayer(winnerId);
-            const adminSettings: AdminSettings = { secret, winningPlayer: winnerId };
+            const adminSettings: AdminSettings = { secret, winningPlayer: winnerId, selectedImage };
             localStorage.setItem('admin-settings', JSON.stringify(adminSettings));
+            // Dispatch custom event for same-window updates
+            window.dispatchEvent(new Event('admin-settings-changed'));
         }
     };
 
@@ -219,6 +251,27 @@ function Admin() {
                 >
                     Unique Bid Game
                 </button>
+            </div>
+
+            {/* Image Selection Dropdown */}
+            <div className="flex justify-center mb-6">
+                <div className="w-full max-w-md">
+                    <label className="block text-gray-300 font-medium mb-2 text-center">
+                        Select Game Image
+                    </label>
+                    <select
+                        value={selectedImage || ''}
+                        onChange={(e) => handleImageChange(e.target.value)}
+                        className="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                        <option value="">None</option>
+                        {availableImages.map((image) => (
+                            <option key={image} value={`/game_images/${image}`}>
+                                {image}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <div className="flex flex-col items-center gap-6">
